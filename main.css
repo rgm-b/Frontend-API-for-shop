@@ -1,0 +1,100 @@
+body{
+	padding: 15px 10px;
+	font-family: arial;
+}
+button{
+	border: 0;
+}
+
+#authorization, #registration{
+	background: #eee;
+	padding: 20px;
+}	
+#authorization h2, #registration h2{
+	margin: 5px 0 20px;
+}	
+#placeForContent{
+	display:flex;
+	flex-wrap: wrap;
+}
+.product_box{
+	border: 1px solid #eee;
+	padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width:250px;	
+    margin: 0 10px 10px 0;	
+}
+.product_box button{
+	margin-bottom: 10px;
+	padding: 5px;
+	width: 180px;
+}
+
+.product_box img{
+	height: 173px;
+	margin-bottom: 20px;
+}
+.product_box__price{
+	margin-bottom: 20px;
+}
+#place{
+	margin: 0 0 40px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;    		
+}
+#place a{
+	margin-right:20px;
+	text-decoration: none;
+}
+#place img{
+	margin-right: 10px;
+}
+#place #newUser{
+	margin-right:auto;
+}
+#reset{
+	margin-left: 20px;
+}
+
+
+
+table{
+	border-collapse: collapse;
+}
+thead{
+	background-color: #eee;
+}
+tfoot{
+	background-color: #eee;
+}
+td{
+	border: 1px solid grey;
+	padding: 5px 15px;
+}
+
+
+
+
+
+
+
+#login{
+	margin-right: 10px;
+}
+#add_product_button{
+	margin-right: 10px;
+}
+
+.cart__title{
+	width: 100%;
+}
+.delCart{
+	cursor: pointer;
+}
+.delCart:hover{
+	background-color: #f1bfbf;
+}
