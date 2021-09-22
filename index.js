@@ -9,30 +9,30 @@ let signMenu ={
   image_src:"img/img-profile.png",
   fields:[
     {  
-      id:"login",
+      id:"buttonLogin",
       class:"link",
       name:"Авторизоваться"
     },
     {
-      id:"newUser",
+      id:"buttonCreateUser",
       class:"link",
       name:"Зарегистрироваться"
     }
   ]
 };	
 
-let formAuthorize = {  
-  id: "authorization", 
+let objFormAuthorize = {  
+  id: "formAuthorization", 
   title: "Авторизация" 
 };
-let formRegistration = {  
-  id: "registration", 
+let objFormRegistration = {  
+  id: "formRegistration", 
   title: "Регистрация" 
 };
 
 //для формы добавления нового товара
-let obj_form_add = {
-  id: "add_product",
+let objFormAdd = {
+  id: "formAddProduct",
   title: "Добавить товаР"
 }
 
@@ -69,13 +69,13 @@ const objData = (self) => {
 }
 
 // success регистрации
-let registration = (response) => {
+let successRegistration = (response) => {
   alert(`${response.message}, Новый пользователь создан!`);
-  $('#login').trigger('click'); //кликнем по кнопке авторизации для вывода формы авторизации
+  $('#buttonLogin').trigger('click'); //кликнем по кнопке авторизации для вывода формы авторизации
 }
 
 // success авторизации
-let autorization = (response) => {
+let successAutorization = (response) => {
   token = response.token;            
   if( token !== null ){
       console.log(`${response.message} - Вы авторизовались!`);
@@ -131,30 +131,14 @@ function addProductSuccess(r){
   request('GET', 'products', getProductList );              
 }
 //Добавление нового товара в магазин
-function addProduct(){
-  let formData = new FormData();          
-      formData.append("name", $('#add_product #name').val() );
-      formData.append("price", $('#add_product #price').val() );
-      formData.append("productimage", $("#add_product #image").prop('files')[0]);
-  console.log("formData:", formData);
-
-  request('POST', 'products', addProductSuccess , formData, beforeSend, false, false);      
+function addProduct(self){
+  let formData = new FormData(self);  
+  request('POST', 'products', addProductSuccess , formData, beforeSend, false, false); 
 }
 
-//??? изменение товара - отправка
-function addProductChange(product_id){
-
-  let formData = new FormData();      
-      formData.append("name", $('#change_product #name').val() );
-      formData.append("price", $('#change_product #price').val() );
-
-  if( $("#change_product #image").prop('files')[0] ){
-    formData.append("productimage", $("#change_product #image").prop('files')[0]);                
-  }else{
-    console.log('ХЕР');
-//???
-  }      //src="http://localhost:3000/uploads\1631293728248-sapogi.png"      
-
+//Изменение товара в магазине
+function addProductChange(self){
+  let formData = new FormData(self);  
   request('PATCH', 'products/'+product_id , addProductChangeSuccess, formData, beforeSend, false, false)
 }
 function addProductChangeSuccess(r){
@@ -174,28 +158,36 @@ function disintegration(response){
 //@@@@@@ начало рефакторинга
 
 //выводим форму регистрации
-$('body').on('click', '#newUser', function(){         
-  handlebars('#tplFormsSign', formRegistration, '#placeForContent');    
+$('body').on('click', '#buttonCreateUser', function(){         
+  handlebars('#tplFormsSign', objFormRegistration, '#placeForContent');    
 });
 
 //выводим форму авторизации 
-$('body').on('click', '#login', function(){         
-  handlebars('#tplFormsSign', formAuthorize, '#placeForContent');    
+$('body').on('click', '#buttonLogin', function(){         
+  handlebars('#tplFormsSign', objFormAuthorize, '#placeForContent');    
 });
 
 //регистрация - отправка формы
-$('body').on('submit', '#registration', function(e){
+$('body').on('submit', '#formRegistration', function(e){
   e.preventDefault();
-  request('POST', 'user/signup', registration, objData(this) );    
+  request('POST', 'user/signup', successRegistration, objData(this) );    
 }); 
 
 //авторизация - отправка формы
-$('body').on('submit', '#authorization', function(e){    
+$('body').on('submit', '#formAuthorization', function(e){    
     e.preventDefault(); 
-    request('POST', 'user/login', autorization, objData(this) ); //this = form#authorization
+    request('POST', 'user/login', successAutorization, objData(this) ); //this = form#formAuthorization
 });
 
-
+//добавления нового товара - отрисовка формы
+$("body").on("click", '#buttonAddProduct', function(){    
+  handlebars("#tplProduct", objFormAdd, "#placeProduct"); 
+});   
+//добавление товара - отправка формы
+$("body").on('submit', '#formAddProduct', function (e){
+  e.preventDefault();
+  addProduct(this);
+});
 
 
 
@@ -203,44 +195,40 @@ $('body').on('submit', '#authorization', function(e){
 
 
 
-
-//выводим форму добавления нового товара  
-$("body").on("click", '#add_product_button', function(){    
-  handlebars("#tpl_change_product", obj_form_add, "#place_change_product"); 
-});   
-
-$("body").on("click", "#go_to_cart", function(){
-  request('GET', 'orders', successGoToCart, null, beforeSend); //переход в корзину
-});
-
-$("body").on('click', ".add_to_cart" , function (){  //по клику на кнопку с классом add_to_cart
-  let product_id = $(this).parent().data("id");
-  console.log(`Продукт с ID ${product_id} помещён в корзину`);
-  addProductToCart(product_id);
-});
-
-$("body").on('submit', '#add_product', function (){
-  event.preventDefault();
-  addProduct();
-});
-
 //изменение товара - отрисовка формы
 $("body").on("click", '.change', function(){
 	product_id = $(this).parent().data("id");  
 	productTitle = $(this).siblings('h4').html();
 	price = $(this).siblings('.product_box__price').children('span').html();
 
-	handlebars("#tpl_change_product", obj_form_change, "#place_change_product"); //сделать отрисовку формы для изменения товара
+	handlebars("#tplProduct", obj_form_change, "#placeProduct"); //сделать отрисовку формы для изменения товара
 	
 	$ ('#change_product #name').val(productTitle);
 	$ ('#change_product #price').val(price);
 });
 //изменение товара - отправка
-$("body").on('submit', '#change_product', function (){
-  event.preventDefault();
-  console.log( $("#change_product #image").prop('files')[0] );
-  addProductChange(product_id);
+$("body").on('submit', '#change_product', function (e){
+  e.preventDefault();
+  addProductChange(this);
 });
+
+
+
+
+
+//добавить в корзину
+$("body").on('click', ".add_to_cart" , function (){
+  let product_id = $(this).parent().data("id");
+  console.log(`Продукт с ID ${product_id} помещён в корзину`);
+  addProductToCart(product_id);
+});
+//переход в корзину
+$("body").on("click", "#go_to_cart", function(){
+  request('GET', 'orders', successGoToCart, null, beforeSend); 
+});
+
+
+
 
 //удаление товара из магазина
 $("body").on("click", '.delete', function(){ //присваиваем кнопке Удалить функцию по клику							  

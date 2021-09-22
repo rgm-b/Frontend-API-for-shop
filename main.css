@@ -6,11 +6,11 @@ button{
 	border: 0;
 }
 
-#authorization, #registration{
+#formAuthorization, #formRegistration{
 	background: #eee;
 	padding: 20px;
 }	
-#authorization h2, #registration h2{
+#formAuthorization h2, #formRegistration h2{
 	margin: 5px 0 20px;
 }	
 #placeForContent{
@@ -53,7 +53,7 @@ button{
 #place img{
 	margin-right: 10px;
 }
-#place #newUser{
+#place #buttonCreateUser{
 	margin-right:auto;
 }
 #reset{
@@ -82,10 +82,10 @@ td{
 
 
 
-#login{
+#buttonLogin{
 	margin-right: 10px;
 }
-#add_product_button{
+#buttonCreateUser{
 	margin-right: 10px;
 }
 

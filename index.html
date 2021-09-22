@@ -26,7 +26,7 @@
 				<!-- Шаблон для кнопок -->
 			  	<script id="button-template" type="text/x-handlebars-template">	
 			  		<div>	    
-					    <button id="add_product_button">Добавить новый товар</button>		
+					    <button id="buttonAddProduct">Добавить новый товар</button>		
 						<button id="go_to_cart">Перейти в корзину</button>
 				    </div>
 					<button id="reset">Выйти</button>
@@ -105,18 +105,18 @@
 				</script>
 
 
-				<div id="place_change_product"></div>
-			  	<script id="tpl_change_product" type="text/x-handlebars-template">
+				<div id="placeProduct"></div>
+			  	<script id="tplProduct" type="text/x-handlebars-template">
 					<form id="{{this.id}}" action="#">
 						<h2>{{this.title}}</h2>
-						<input id="name" placeholder="Название товара" type="text"> <br><br>
-						<input id="price" placeholder="Цена" type="text"> <br><br>
-						<input id="image" placeholder="Файл" type="file"> <br><br>
+						<input id="name" name="name" placeholder="Название товара" type="text"> <br><br>
+						<input id="price" name="price" placeholder="Цена" type="text"> <br><br>
+						<input id="image" name="productimage" placeholder="Файл" type="file"> <br><br>
 						<input type="submit">		
 					</form>
 				</script>
 
-				<div id="place_add_product"></div>
+				<!-- <div id="place_add_product"></div>
 			  	<script id="tpl_add_product" type="text/x-handlebars-template">
 					<form id="add_product" action="#">
 						<h2>Загрузка товара</h2>
@@ -125,7 +125,7 @@
 						<input id="image" placeholder="Файл" type="file"> <br><br>
 						<input type="submit">		
 					</form>
-				</script>
+				</script> -->
 				
 			</div>
 		</div>
