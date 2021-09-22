@@ -42,11 +42,11 @@
 				<div id="placeForContent">		
 				</div>
 				<!-- Шаблон для форм Атроризации и Регистрации -->
-				<script id="myTpl" type="text/x-handlebars-template">		
+				<script id="tplFormsSign" type="text/x-handlebars-template">		
 					<form id="{{this.id}}" action="#">
 						<h2>{{this.title}}</h2>
-						<input id="email" placeholder="Почта" type="text"> <br><br>
-						<input id="password" placeholder="Пароль" type="text"> <br><br>
+						<input name="email" placeholder="Почта" type="text"> <br><br>
+						<input name="password" placeholder="Пароль" type="text"> <br><br>
 						<input type="submit">		
 					</form>		
 				</script>

@@ -62,10 +62,16 @@ let request = (method, urlEnd, success, data, beforeSend,processData,contentType
     });
 }
 
+//данные при отправке формы регистрации и авторизации (name)
+const objData = (self) => {
+    const formData = new FormData(self);
+	return Object.fromEntries( formData.entries() );
+}
+
 // success регистрации
 let registration = (response) => {
   alert(`${response.message}, Новый пользователь создан!`);
-  $('#login').trigger('click'); //кликнем по кнопке авторизации
+  $('#login').trigger('click'); //кликнем по кнопке авторизации для вывода формы авторизации
 }
 
 // success авторизации
@@ -165,30 +171,42 @@ function disintegration(response){
 	request('GET', 'products', getProductList );
 }
 
+//@@@@@@ начало рефакторинга
 
-//авторизация
-$('body').on('click', '#login', function(){         
-  handlebars('#myTpl', formAuthorize, '#placeForContent'); //выводим форму авторизации    
-});
-//регистрация
+//выводим форму регистрации
 $('body').on('click', '#newUser', function(){         
-  handlebars('#myTpl', formRegistration, '#placeForContent'); //выводим форму регистрации    
+  handlebars('#tplFormsSign', formRegistration, '#placeForContent');    
 });
 
-//регистрация
-$('body').on('submit', '#registration', function(){
-  event.preventDefault();
-  request('POST', 'user/signup', registration, { email: $('#registration #email').val() , password: $("#registration #password").val() }  );    
+//выводим форму авторизации 
+$('body').on('click', '#login', function(){         
+  handlebars('#tplFormsSign', formAuthorize, '#placeForContent');    
+});
+
+//регистрация - отправка формы
+$('body').on('submit', '#registration', function(e){
+  e.preventDefault();
+  request('POST', 'user/signup', registration, objData(this) );    
 }); 
 
-//авторизация
-$('body').on('submit', '#authorization', function(){    
-  event.preventDefault();     
-    request('POST', 'user/login', autorization, { email: $('#authorization #email').val(), password: $('#authorization #password').val() }  );
+//авторизация - отправка формы
+$('body').on('submit', '#authorization', function(e){    
+    e.preventDefault(); 
+    request('POST', 'user/login', autorization, objData(this) ); //this = form#authorization
 });
 
+
+
+
+
+//@@@@@@ конец рефакторинга
+
+
+
+
+//выводим форму добавления нового товара  
 $("body").on("click", '#add_product_button', function(){    
-  handlebars("#tpl_change_product", obj_form_add, "#place_change_product"); //выводим форму добавления нового товара  
+  handlebars("#tpl_change_product", obj_form_add, "#place_change_product"); 
 });   
 
 $("body").on("click", "#go_to_cart", function(){
